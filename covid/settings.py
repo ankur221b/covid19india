@@ -25,7 +25,7 @@ SECRET_KEY = ')*&0@^528ht@3z0j1k1b*!#7tdd5&kwqofp=hn+uq4&s5&+b)4'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['covid-19indiastat.herokuapp.com']
+ALLOWED_HOSTS = ['covid-19indiastat.herokuapp.com','localhost']
 
 
 # Application definition
