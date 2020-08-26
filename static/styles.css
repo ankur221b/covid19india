@@ -1,0 +1,257 @@
+body {
+	background-color: #161625;
+	margin: 0;
+	padding: 0;
+}
+
+.navbar,
+input {
+	background-color: #161625 !important;
+}
+
+.result-wrap {
+	height: 80px;
+	padding-left: 20px;
+	cursor: pointer;
+	border-bottom: 2px solid rgba(108, 117, 125, 0.0627451);
+	width: 100%;
+}
+
+.result-wrap:hover {
+	background-color: rgba(108, 117, 125, 0.0627451);
+}
+
+.result {
+	padding-top: 25px;
+	color: #6c757d;
+	font-size: 30px;
+}
+.form-inline {
+	margin: auto;
+	height: 75px;
+}
+.form-control {
+	height: 100%;
+	width: 100%;
+	font-size: 30px;
+	background: #1e1e30 !important;
+	border: none;
+	padding-left: 20px;
+	color: #6c757d;
+}
+
+.form-control:focus {
+	outline: none;
+}
+
+.navbar {
+	height: 100%;
+}
+.search-container {
+	width: 600px;
+	height: auto;
+	margin: auto;
+	margin-top: 50px;
+}
+
+.container-statewise {
+	margin: auto;
+	margin-top: 100px;
+	width: 1000px;
+}
+
+.wrapper {
+	height: 300px;
+	width: 1200px;
+	margin: auto;
+	display: flex;
+	justify-content: space-evenly;
+	margin-top: 100px;
+	animation-name: opacity;
+	animation-duration: 1000ms;
+}
+
+@keyframes opacity {
+	from {
+		opacity: 0.1;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+.box {
+	height: 100%;
+	width: 250px;
+	align-items: center;
+}
+
+.heading {
+	text-align: center;
+	font-size: 25px;
+	font-family: 'Oswald', sans-serif;
+}
+
+.isConfirmed,
+.isActive,
+.isRecovered,
+.isDeceased {
+	width: 100%;
+	height: 40px;
+	text-align: center;
+	/*margin-top: 50px;*/
+	font-size: 30px;
+	animation-name: opacity;
+	animation-duration: 1000ms;
+}
+
+.confirmed,
+.isConfirmed {
+	color: #e90838;
+	font-family: 'Oswald', sans-serif;
+}
+
+.active,
+.isActive {
+	color: #0178f7;
+	font-family: 'Oswald', sans-serif;
+}
+
+.recovered,
+.isRecovered {
+	color: #279b42;
+	font-family: 'Oswald', sans-serif;
+}
+
+.deceased,
+.isDeceased {
+	color: #656e76;
+	font-family: 'Oswald', sans-serif;
+}
+
+.wrapper-statewise {
+	height: auto;
+	width: 100%;
+	overflow: auto;
+	margin: auto;
+	display: flex;
+	justify-content: space-between;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	min-height: 64px;
+}
+
+.statename,
+.confirmeddata,
+.activedata,
+.recovereddata,
+.deceaseddata {
+	width: 160px;
+	height: auto;
+	color: #656e76;
+	text-align: left;
+	background: #1e1e30 !important;
+	margin-left: 1px;
+	margin-right: 0px;
+	font-size: 20px;
+	padding-left: 10px;
+	border-radius: 5px;
+	font-family: 'Oswald', sans-serif;
+}
+
+.statename {
+	width: 300px;
+	font-weight: 900;
+	font-size: 20px;
+	animation-name: animate;
+	animation-duration: 500ms;
+	cursor: pointer;
+}
+
+@keyframes animate {
+	from {
+		padding-top: 30px;
+	}
+	to {
+		padding-top: 0px;
+	}
+}
+
+.confirmGraph,
+.activeGraph,
+.recoveredGraph,
+.deceasedGraph {
+	width: 80%;
+	height: 100px;
+	margin: auto;
+	margin-top: 40px;
+}
+
+.fas.fa-sort-up,
+.fas.fa-sort-down {
+	margin-left: 20px;
+	font-size: 15px;
+}
+
+.title-heading {
+	width: auto;
+	height: auto;
+	background: rgba(40, 167, 69, 0.12549);
+	display: inline-block;
+	padding: 15px;
+	margin-left: 350px;
+	margin-top: 50px;
+}
+
+.title {
+	color: #279b42;
+	font-family: 'Oswald', sans-serif;
+	font-size: 35px;
+}
+
+.deltaConfirmed,
+.deltaDeceased,
+.deltaRecovered {
+	text-align: center;
+	margin-top: 50px;
+	font-family: 'Oswald', sans-serif;
+	font-size: 20px;
+}
+
+.deltaActive {
+	text-align: center;
+	margin-top: 50px;
+	font-family: 'Oswald', sans-serif;
+	font-size: 20px;
+	visibility: hidden;
+}
+
+.footer {
+	width: 400px;
+	height: 300px;
+	margin: auto;
+	display: flex;
+	text-align: center;
+	justify-content: center;
+	align-items: center;
+}
+
+.icons a {
+	font-size: 35px;
+	margin: 20px;
+}
+
+.search-heading {
+	text-align: center;
+	color: #6c757d;
+	font-family: 'Oswald', sans-serif;
+}
+
+.home {
+	display: flex;
+	margin-top: 50px;
+	margin-left: 200px;
+	font-size: 40px;
+	font-family: 'Oswald', sans-serif;
+	text-decoration: none;
+}
