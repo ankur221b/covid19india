@@ -1,4 +1,9 @@
 # covid19india
 
-https://covid-19indiastat.herokuapp.com/
+https://bit.ly/ankcovid
 
+
+
+
+ 
+![Alt text](screenshot.png?raw=true "Title")
