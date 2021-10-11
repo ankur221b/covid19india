@@ -12,7 +12,7 @@ import {
 document.querySelector('.home').href = window.location.origin;
 
 // fetch statewise data from api
-var url = 'https://api.covid19india.org/state_district_wise.json';
+var url = 'https://data.covid19india.org/state_district_wise.json';
 
 var stateResponse = fetch(url).then((response) => response.json());
 
