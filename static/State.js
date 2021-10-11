@@ -10,7 +10,7 @@ import {
 
 import plotGraph from './plot.js';
 
-const URL = 'https://api.covid19india.org/state_district_wise.json';
+const URL = 'https://data.covid19india.org/state_district_wise.json';
 document.querySelector('.home').href = window.location.origin;
 
 const state = document.querySelector('.title').innerHTML;
