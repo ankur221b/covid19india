@@ -93,7 +93,7 @@ for (let button of buttonlist) {
 
 DistrictWise(response, data);
 
-response = fetch('https://api.covid19india.org/v4/timeseries.json');
+response = fetch('https://data.covid19india.org/v4/timeseries.json');
 response = response.then((response) => response.json());
 
 response.then((response) => {
