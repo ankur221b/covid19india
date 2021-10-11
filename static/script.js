@@ -97,7 +97,7 @@ stateResponse.then(function (response) {
 });
 
 // time series data
-url = 'https://api.covid19india.org/data.json';
+url = 'https://data.covid19india.org/data.json';
 
 let response = fetch(url).then((response) => response.json());
 
