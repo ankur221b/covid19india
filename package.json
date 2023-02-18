@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "parcel index.html --open"
   },
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ankur221b/covid19india.git"
@@ -18,9 +19,10 @@
   },
   "homepage": "https://github.com/ankur221b/covid19india#readme",
   "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.18.2",
-    "nodemon": "^2.0.20",
-    "pug": "^3.0.2"
+    "parcel": "^2.8.3",
+    "parcel-bundler": "^1.12.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.8.1"
   }
 }
