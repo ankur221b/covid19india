@@ -9,11 +9,12 @@ import {
 } from './utility.js';
 
 import plotGraph from './plot.js';
-
+var state = window.location.pathname.replaceAll('/','').replaceAll('%20',' ');
 const URL = 'https://data.covid19india.org/state_district_wise.json';
 document.querySelector('.home').href = window.location.origin;
 
-const state = document.querySelector('.title').innerHTML;
+
+document.querySelector('.title').innerHTML = state;
 document.querySelector('title').innerHTML = `${state} COVID-19 Data`;
 
 var response = fetch(URL).then((response) => response.json());

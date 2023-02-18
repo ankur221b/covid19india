@@ -149,7 +149,9 @@ export function DistrictWise(response, data) {
 }
 
 export function Mapping(state) {
-	let response = fetch('https://api.covid19india.org/data.json');
+	let response = fetch('https://api.covid19india.org/data.json', {
+		mode: 'no-cors'
+	  });
 	response = response.then((response) => response.json());
 
 	let map = {
