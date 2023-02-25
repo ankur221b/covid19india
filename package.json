@@ -2,7 +2,6 @@
   "name": "covid19india",
   "version": "1.0.0",
   "description": "https://bit.ly/ankcovid",
-  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "parcel index.html --open"
