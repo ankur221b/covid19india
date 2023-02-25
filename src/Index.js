@@ -9,19 +9,7 @@ const DOMPurify = createDOMPurify(window);
 const Index = () => {
 	return (
 		<>
-			<div>
-				{/* {
-					<div
-						dangerouslySetInnerHTML={{
-							__html: DOMPurify.sanitize(html),
-						}}
-					/>
-				} */}
-				<Helmet>
-					<script type="module" src="./src/script.js"></script>
-				</Helmet>
-				{/* <script src="./script.js"></script> */}
-			</div>
+			<div></div>
 		</>
 	);
 };

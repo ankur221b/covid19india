@@ -17,7 +17,9 @@
 			<div style="color: #4c75f2;">COVID</div>
 			<div style="color: #6c757d;">19</div>
 		</a>
-	
+		<div class="title-heading">
+			<div class="title"></div>
+		</div>
 		<div class="search-heading">Search your district or state</div>
 	</div>
 	
@@ -122,12 +124,15 @@ import {
 	PutComma,
 	searchResult,
 	putDelta,
+	DistrictWise,
+	Mapping
 } from './src/utility.js';
-if(url=="/"){
+var url = window.location.pathname.replace('/','');
+if(url ==""){
 
 
 // document.querySelector('.home').href = window.location.origin;
-
+document.querySelector('.title-heading').classList.add('hide');
 // fetch statewise data from api
 var url = 'https://data.covid19india.org/state_district_wise.json';
 
@@ -336,7 +341,9 @@ else{
 document.querySelector('.home').href = window.location.origin;
 
 // const state = document.querySelector('.title').innerHTML;
-const state = window.location.pathname;
+const state = window.location.pathname.replace('/','').replaceAll('%20',' ');
+console.log("State :"+state);
+document.querySelector('.title').innerHTML = state;
 document.querySelector('title').innerHTML = `${state} COVID-19 Data`;
 
 var response = fetch(URL).then((response) => response.json());
@@ -458,7 +465,7 @@ response.then((response) => {
 <script>
 	window.addEventListener("DOMContentLoaded",function(){
 		var url = window.location.pathname;
-		
+		console.log(url);
 		var script = document.createElement("script");
 		script.type="module";
 		if(url=="/"){

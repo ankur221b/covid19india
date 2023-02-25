@@ -255,3 +255,6 @@ input {
 	font-family: 'Oswald', sans-serif;
 	text-decoration: none;
 }
+.hide{
+	display: none;
+}
