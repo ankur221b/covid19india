@@ -5,20 +5,473 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Covid19 India</title>
 
-		<link rel="stylesheet" href="../styles.css" />
+		<link rel="stylesheet" href="./src/styles.css" />
 		<link
 			href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&display=swap"
 			rel="stylesheet"
 		/>
 	</head>
 <body>
+	<div>
+		<a class="home">
+			<div style="color: #4c75f2;">COVID</div>
+			<div style="color: #6c757d;">19</div>
+		</a>
+	
+		<div class="search-heading">Search your district or state</div>
+	</div>
+	
+	<div class="search-container">
+		<nav class="navbar">
+			<form class="form-inline">
+				<input
+					class="form-control"
+					placeholder="Search"
+					aria-label="Search"
+				/>
+			</form>
+		</nav>
+	</div>
+	
+	<div class="wrapper">
+		<div class="box">
+			<div class="heading confirmed">Confirmed</div>
+			<div class="deltaConfirmed"></div>
+			<div class="isConfirmed"></div>
+			<div class="confirmGraph" data-color="rgba(233, 8, 56, 1)">
+				<canvas class="myChart1"></canvas>
+			</div>
+		</div>
+	
+		<div class="box">
+			<div class="heading active">Active</div>
+			<div class="deltaActive"></div>
+			<div class="isActive"></div>
+			<div class="activeGraph" data-color="rgba(1, 120, 247, 1)">
+				<canvas class="myChart2"></canvas>
+			</div>
+		</div>
+	
+		<div class="box">
+			<div class="heading recovered">Recovered</div>
+			<div class="deltaRecovered"></div>
+			<div class="isRecovered"></div>
+			<div class="recoveredGraph" data-color="rgba(39, 155, 66, 1)">
+				<canvas class="myChart3"></canvas>
+			</div>
+		</div>
+	
+		<div class="box">
+			<div class="heading deceased">Deceased</div>
+			<div class="deltaDeceased"></div>
+			<div class="isDeceased"></div>
+			<div class="deceasedGraph" data-color="rgba(101, 110, 118, 1)">
+				<canvas class="myChart4"></canvas>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-statewise">
+		<div class="wrapper-statewise">
+			<div class="statename">State/UT</div>
+			<div class="confirmeddata">Confirmed</div>
+			<div class="activedata">Active</div>
+			<div class="recovereddata">Recovered</div>
+			<div class="deceaseddata">Deceased</div>
+		</div>
+	</div>
     <div id="root"></div>
-	<script src="./index.js"></script>
+	
+	<footer class="footer">
+		<div class="foothead"></div>
+		<div class="icons">
+			<a title="github" href="https://github.com/ankur221b"
+				><i style="color: #656e76;" class="fab fa-github"></i
+			></a>
+			<a title="api" href="https://api.covid19india.org"
+				><i
+					style="color: rgba(255, 193, 7, 0.6);"
+					class="fas fa-database"
+				></i
+			></a>
+			<a title="twitter" href="https://twitter.com"
+				><i style="color: #4c75f2;" class="fab fa-twitter"></i
+			></a>
+			<a title="mail" href="mailto:ankur221b@gmail.com"
+				><i style="color: #b6854d;" class="fas fa-envelope"></i
+			></a>
+		</div>
+	</footer>	
     <script
     src="https://kit.fontawesome.com/8327b10ac1.js"
     crossorigin="anonymous"
 ></script>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+<script type="module" src="./index.js"></script>
+<!-- <script type="module" src="./src/script.js"></script> -->
+<!-- <script type="module" src="./src/State.js"></script> -->
+<script type="module" >
+	import plotGraph from './src/plot.js';
+import {
+	StateWise,
+	SortStatewise,
+	putIcon,
+	removeIcon,
+	PutComma,
+	searchResult,
+	putDelta,
+} from './src/utility.js';
+if(url=="/"){
+
+
+// document.querySelector('.home').href = window.location.origin;
+
+// fetch statewise data from api
+var url = 'https://data.covid19india.org/state_district_wise.json';
+
+var stateResponse = fetch(url).then((response) => response.json());
+
+class District {
+	constructor(name, active, deceased, recovered) {
+		this.name = name;
+		this.active = active;
+		this.deceased = deceased;
+		this.recovered = recovered;
+	}
+}
+
+class State {
+	constructor(name, active, deceased, recovered, districts) {
+		this.name = name;
+		this.active = active;
+		this.deceased = deceased;
+		this.recovered = recovered;
+		this.confirm = this.active + this.deceased + this.recovered;
+		this.districts = districts;
+	}
+}
+
+var data = [];
+var totalActive = 0;
+var totalDeceased = 0;
+var totalRecovered = 0;
+var totalConfirmed = 0;
+
+// creating list of state objects
+stateResponse.then(function (response) {
+	for (let state in response) {
+		if (state == 'State Unassigned') continue;
+
+		let active = 0;
+		let deceased = 0;
+		let recovered = 0;
+
+		let obj = Object.create(null);
+
+		for (let current in response[state].districtData) {
+			let curr_active = response[state].districtData[current].active;
+			let curr_deceased = response[state].districtData[current].deceased;
+			let curr_recovered =
+				response[state].districtData[current].recovered;
+
+			let currDistrict = new District(
+				current,
+				curr_active,
+				curr_deceased,
+				curr_recovered
+			);
+
+			active += curr_active;
+			deceased += curr_deceased;
+			recovered += curr_recovered;
+
+			obj[current] = currDistrict;
+		}
+
+		let currState = new State(state, active, deceased, recovered, obj);
+		data.push(currState);
+
+		totalActive += active;
+		totalDeceased += deceased;
+		totalRecovered += recovered;
+	}
+
+	totalConfirmed = totalDeceased + totalActive + totalRecovered;
+
+	var ConfirmedElement = document.querySelector('.isConfirmed');
+	ConfirmedElement.innerHTML = PutComma(totalConfirmed);
+
+	var ActiveElement = document.querySelector('.isActive');
+	ActiveElement.innerHTML = PutComma(totalActive);
+
+	var RecoveredElement = document.querySelector('.isRecovered');
+	RecoveredElement.innerHTML = PutComma(totalRecovered);
+
+	var DeceasedElement = document.querySelector('.isDeceased');
+	DeceasedElement.innerHTML = PutComma(totalDeceased);
+});
+
+// time series data
+url = 'https://data.covid19india.org/data.json';
+
+let response = fetch(url).then((response) => response.json());
+
+//preparing data for graph
+response.then(function (response) {
+	let confirm = [];
+	let active = [];
+	let deceased = [];
+	let recovered = [];
+	let date = [];
+
+	let data = response['cases_time_series'];
+	for (let index in data) {
+		confirm.push(data[index].dailyconfirmed);
+		deceased.push(data[index].dailydeceased);
+		recovered.push(data[index].dailyrecovered);
+		active.push(
+			confirm[confirm.length - 1] -
+				deceased[deceased.length - 1] -
+				recovered[recovered.length - 1]
+		);
+	}
+
+	for (let index in data) {
+		date.push(data[index].date);
+	}
+
+	confirm = confirm.slice(confirm.length - 20);
+	active = active.slice(active.length - 20);
+	deceased = deceased.slice(deceased.length - 20);
+	recovered = recovered.slice(recovered.length - 20);
+	date = date.slice(date.length - 20);
+
+	putDelta('confirm', confirm[confirm.length - 1]);
+	putDelta('Deceased', deceased[deceased.length - 1]);
+	putDelta('Recovered', recovered[recovered.length - 1]);
+	putDelta('Active', active[active.length - 1]);
+
+	plotGraph(confirm, active, deceased, recovered, date);
+});
+
+var buttonlist = [];
+buttonlist.push(document.querySelector('.confirmeddata'));
+buttonlist.push(document.querySelector('.activedata'));
+buttonlist.push(document.querySelector('.recovereddata'));
+buttonlist.push(document.querySelector('.deceaseddata'));
+
+for (let button of buttonlist) {
+	button.addEventListener('click', function (e) {
+		let list = button.classList;
+
+		let attribute = list[0].replace('data', '');
+
+		if (list.contains('changed')) {
+			if (list.contains('ascending')) {
+				button.classList.remove('ascending');
+				button.classList.add('descending');
+			} else {
+				button.classList.add('ascending');
+				button.classList.remove('descending');
+			}
+		} else {
+			button.classList.add('changed');
+			button.classList.add('ascending');
+		}
+
+		if (list.contains('ascending')) {
+			SortStatewise(attribute, 1, data);
+			StateWise(stateResponse, data);
+			removeIcon();
+			putIcon(attribute, 1);
+		} else {
+			SortStatewise(attribute, -1, data);
+			StateWise(stateResponse, data);
+			removeIcon();
+			putIcon(attribute, -1);
+		}
+	});
+}
+
+StateWise(stateResponse, data);
+
+var searchBox = document.querySelector('.form-control');
+searchBox.addEventListener('input', search);
+searchBox.addEventListener('keydown', search);
+searchBox.addEventListener('search', (e) => {
+	e.preventDefault();
+});
+
+function search(e) {
+	let query = e.target.value;
+
+	var SearchElement = document.querySelector('.navbar');
+
+	if (query == '') {
+		let child = SearchElement.lastElementChild;
+
+		while (SearchElement.childElementCount > 1) {
+			SearchElement.removeChild(child);
+			child = SearchElement.lastElementChild;
+		}
+		return;
+	}
+	let results = searchResult(query.toLowerCase(), data);
+
+	var child = SearchElement.lastElementChild;
+
+	while (SearchElement.childElementCount > 1) {
+		SearchElement.removeChild(child);
+		child = SearchElement.lastElementChild;
+	}
+	for (let result of results) {
+		SearchElement.appendChild(result);
+	}
+}
+}
+else{
+	const URL = 'https://data.covid19india.org/state_district_wise.json';
+document.querySelector('.home').href = window.location.origin;
+
+// const state = document.querySelector('.title').innerHTML;
+const state = window.location.pathname;
+document.querySelector('title').innerHTML = `${state} COVID-19 Data`;
+
+var response = fetch(URL).then((response) => response.json());
+
+var data = [];
+var totalActive = 0;
+var totalDeceased = 0;
+var totalRecovered = 0;
+var totalConfirmed = 0;
+
+response.then(function (response) {
+	let tmp = Object.values(response[state])[0];
+
+	for (let district in tmp) {
+		tmp[district].name = district;
+		data.push(tmp[district]);
+	}
+
+	for (let district in data) {
+		totalConfirmed += data[district].confirmed;
+		totalActive += data[district].active;
+		totalDeceased += data[district].deceased;
+		totalRecovered += data[district].recovered;
+	}
+
+	var ConfirmedElement = document.querySelector('.isConfirmed');
+	ConfirmedElement.innerHTML = PutComma(totalConfirmed);
+
+	var ActiveElement = document.querySelector('.isActive');
+	ActiveElement.innerHTML = PutComma(totalActive);
+
+	var RecoveredElement = document.querySelector('.isRecovered');
+	RecoveredElement.innerHTML = PutComma(totalRecovered);
+
+	var DeceasedElement = document.querySelector('.isDeceased');
+	DeceasedElement.innerHTML = PutComma(totalDeceased);
+});
+
+var buttonlist = [];
+buttonlist.push(document.querySelector('.confirmeddata'));
+buttonlist.push(document.querySelector('.activedata'));
+buttonlist.push(document.querySelector('.recovereddata'));
+buttonlist.push(document.querySelector('.deceaseddata'));
+
+for (let button of buttonlist) {
+	button.addEventListener('click', function (e) {
+		let list = button.classList;
+
+		let attribute = list[0].replace('data', '');
+
+		if (list.contains('changed')) {
+			if (list.contains('ascending')) {
+				button.classList.remove('ascending');
+				button.classList.add('descending');
+			} else {
+				button.classList.add('ascending');
+				button.classList.remove('descending');
+			}
+		} else {
+			button.classList.add('changed');
+			button.classList.add('ascending');
+		}
+
+		if (list.contains('ascending')) {
+			SortStatewise(attribute, 1, data);
+			DistrictWise(response, data);
+			removeIcon();
+			putIcon(attribute, 1);
+		} else {
+			SortStatewise(attribute, -1, data);
+			DistrictWise(response, data);
+			removeIcon();
+			putIcon(attribute, -1);
+		}
+	});
+}
+
+DistrictWise(response, data);
+
+response = fetch('https://data.covid19india.org/v4/timeseries.json');
+response = response.then((response) => response.json());
+
+response.then((response) => {
+	let dates = [];
+	let confirmed = [];
+	let active = [];
+	let recovered = [];
+	let deceased = [];
+	dates = Object.keys(response[Mapping(state)].dates);
+	let data = Object.values(response[Mapping(state)].dates);
+
+	for (let date of data) {
+		if (!date.delta) continue;
+
+		confirmed.push(date.delta.confirmed);
+		recovered.push(date.delta.recovered);
+		deceased.push(date.delta.deceased || 0);
+		active.push(
+			date.delta.confirmed -
+				date.delta.recovered -
+				(date.delta.deceased || 0)
+		);
+	}
+	confirmed = confirmed.slice(confirmed.length - 20);
+	active = active.slice(active.length - 20);
+	recovered = recovered.slice(recovered.length - 20);
+	deceased = deceased.slice(deceased.length - 20);
+	dates = dates.slice(dates.length - 20);
+
+	putDelta('confirm', confirmed[confirmed.length - 1]);
+	putDelta('Deceased', deceased[deceased.length - 1]);
+	putDelta('Recovered', recovered[recovered.length - 1]);
+	putDelta('Active', active[active.length - 1]);
+
+	plotGraph(confirmed, active, deceased, recovered, dates);
+});
+}
+</script>
+<script>
+	window.addEventListener("DOMContentLoaded",function(){
+		var url = window.location.pathname;
+		
+		var script = document.createElement("script");
+		script.type="module";
+		if(url=="/"){
+				script.src = "./src/script.js";
+				console.log(url);
+		}
+		else{
+			script.src = "./src/State.js";
+			console.log(url);
+		}
+		document.body.appendChild(script);
+	})
+</script>
+
 </body>
 </html>

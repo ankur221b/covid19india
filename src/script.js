@@ -9,7 +9,7 @@ import {
 	putDelta,
 } from './utility.js';
 
-document.querySelector('.home').href = window.location.origin;
+// document.querySelector('.home').href = window.location.origin;
 
 // fetch statewise data from api
 var url = 'https://data.covid19india.org/state_district_wise.json';
